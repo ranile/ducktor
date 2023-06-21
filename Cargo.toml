@@ -2,6 +2,14 @@
 name = "ducktor"
 version = "0.1.0"
 edition = "2021"
+readme = "README.md"
+repository = "https://github.com/hamza1311/ducktor"
+authors = ["Muhammad Hamza <me@mhamza.dev>"]
+license = "MIT"
+description = "A macro to generate constructor to instanicate structs from JsValue using duck-typing."
+documentation = "https://docs.rs/ducktor"
+keywords = ["wasm", "wasm-bindgen", "duck-typing", "constructor", "macro"]
+categories = ["development-tools::ffi", "wasm"]
 
 [lib]
 proc-macro = true
