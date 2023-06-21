@@ -1,3 +1,5 @@
+#![doc = include_str!("../README.md")]
+
 use proc_macro2::TokenStream;
 use quote::{format_ident, quote, ToTokens};
 use syn::spanned::Spanned;
@@ -69,8 +71,8 @@ fn expand_from_js_value(input: DeriveInput) -> syn::Result<TokenStream> {
     });
 
     let output = quote! {
-        impl #struct_ident {
-            fn from_js_value(value: &::wasm_bindgen::JsValue) -> Self {
+        impl ::core::convert::From<&::wasm_bindgen::JsValue> for #struct_ident {
+            fn from(value: &::wasm_bindgen::JsValue) -> Self {
                 #extern_block
                 let imported: &#imported = ::wasm_bindgen::JsValue::unchecked_ref(value);
                 #struct_ident {

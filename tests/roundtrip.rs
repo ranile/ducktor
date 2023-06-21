@@ -16,7 +16,7 @@ fn roundtrip() {
     js_sys::Reflect::set(&data, &"a".into(), &42.into()).unwrap();
     js_sys::Reflect::set(&data, &"b".into(), &"string".into()).unwrap();
 
-    let data: Data = Data::from_js_value(&data.into());
+    let data: Data = Data::from(data.as_ref());
     assert_eq!(data.a, 42);
     assert_eq!(data.b, "string");
 }
