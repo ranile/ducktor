@@ -1,0 +1,31 @@
+error: cannot derive `FromJsValue` for enums
+ --> tests/ui/failing.rs:4:1
+  |
+4 | enum Data {}
+  | ^^^^
+
+error: cannot derive `FromJsValue` for unions
+ --> tests/ui/failing.rs:7:1
+  |
+7 | union Union {
+  | ^^^^^
+
+error: cannot derive `FromJsValue` for unit structs
+  --> tests/ui/failing.rs:12:1
+   |
+12 | struct UnitStruct;
+   | ^^^^^^^^^^^^^^^^^^
+
+error: cannot derive `FromJsValue` for tuple structs
+  --> tests/ui/failing.rs:15:19
+   |
+15 | struct TupleStruct(u32, i64);
+   |                   ^^^^^^^^^^
+
+error: unions cannot have zero fields
+ --> tests/ui/failing.rs:7:1
+  |
+7 | / union Union {
+8 | |
+9 | | }
+  | |_^
