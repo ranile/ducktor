@@ -139,11 +139,12 @@ impl RustType {
     fn gen_into_impl(&self) -> TokenStream {
         let RustType { imported, ident: struct_ident, .. } = &self;
         let extern_block = self.build_extern_block(|| {
-            let imported = &self.imported;
             let setters = self.build_setters();
             quote! {
+                #[wasm_bindgen(typescript_type = "object")]
+                pub type Object;
                 #[wasm_bindgen(constructor)]
-                fn new() -> #imported;
+                pub fn new() -> Object;
 
                 #setters
             }
@@ -164,7 +165,8 @@ impl RustType {
             impl ::core::convert::Into<::wasm_bindgen::JsValue> for #struct_ident {
                 fn into(self) -> ::wasm_bindgen::JsValue {
                     #extern_block
-                    let value = #imported::new();
+                    let value = Object::new();
+                    let value: #imported = value.unchecked_into();
                     #(#fields)*
                     ::wasm_bindgen::JsValue::from(value)
                 }
