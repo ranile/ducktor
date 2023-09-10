@@ -2,9 +2,9 @@
 
 use proc_macro2::{Ident, TokenStream};
 use quote::{format_ident, quote, ToTokens};
+use syn::parse::{Parse, ParseStream};
 use syn::spanned::Spanned;
 use syn::{parse_macro_input, Data, DeriveInput, Error, Field, Fields};
-use syn::parse::{Parse, ParseStream};
 
 struct RustType {
     ident: Ident,
@@ -109,7 +109,11 @@ impl RustType {
     }
 
     fn gen_from_impl(&self) -> TokenStream {
-        let RustType { imported, ident: struct_ident, .. } = &self;
+        let RustType {
+            imported,
+            ident: struct_ident,
+            ..
+        } = &self;
 
         let extern_block = self.build_extern_block(|| self.build_getters());
         let fields = self.fields.iter().map(|field| {
@@ -120,7 +124,6 @@ impl RustType {
                 #ident: imported.#ident(),
             }
         });
-
 
         quote! {
             #[automatically_derived]
@@ -137,7 +140,11 @@ impl RustType {
     }
 
     fn gen_into_impl(&self) -> TokenStream {
-        let RustType { imported, ident: struct_ident, .. } = &self;
+        let RustType {
+            imported,
+            ident: struct_ident,
+            ..
+        } = &self;
         let extern_block = self.build_extern_block(|| {
             let setters = self.build_setters();
             quote! {
@@ -149,7 +156,6 @@ impl RustType {
                 #setters
             }
         });
-
 
         let fields = self.fields.iter().map(|field| {
             let Field { ident, .. } = field;
@@ -181,7 +187,6 @@ impl ToTokens for RustType {
         tokens.extend(self.gen_into_impl());
     }
 }
-
 
 #[proc_macro_derive(FromJsValue)]
 pub fn from_js_value(input: proc_macro::TokenStream) -> proc_macro::TokenStream {
